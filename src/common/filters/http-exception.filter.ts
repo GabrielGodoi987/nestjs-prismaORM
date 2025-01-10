@@ -22,7 +22,7 @@ export class HttpExceptionFilter<T extends HttpException>
         ? { message: exceptionResponse }
         : (exceptionResponse as object);
 
-    response.status(status).json({
+    return response.status(status).json({
       ...error,
       timestamp: new Date().toISOString(),
     });

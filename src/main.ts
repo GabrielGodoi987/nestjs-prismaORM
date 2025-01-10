@@ -6,10 +6,10 @@ import {
   SwaggerModule,
 } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
-import { UnAuthorizedInterceptor } from './common/Errors/interceptors/UnAuthorized.interceptor';
-import { NotFoundErrorInterceptor } from './common/Errors/interceptors/NotFoundError.interceptor';
+import { UnauthorizedInterceptor } from './common/Errors/interceptors/UnAuthorized.interceptor';
+import { NotFoundInterceptor } from './common/Errors/interceptors/NotFoundError.interceptor';
 import { DatabaseInterceptor } from './common/Errors/interceptors/Database.interceptor';
-import { ConflictErrorInterceptor } from './common/Errors/interceptors/conflict-error.interceptor';
+import { ConflictInterceptor } from './common/Errors/interceptors/conflict-error.interceptor';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 
 async function bootstrap() {
@@ -36,10 +36,10 @@ async function bootstrap() {
 
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalInterceptors(
-    new ConflictErrorInterceptor(),
+    new ConflictInterceptor(),
     new DatabaseInterceptor(),
-    new NotFoundErrorInterceptor(),
-    new UnAuthorizedInterceptor(),
+    new NotFoundInterceptor(),
+    new UnauthorizedInterceptor(),
   );
   await app.listen(process.env.PORT ?? 3000);
 }

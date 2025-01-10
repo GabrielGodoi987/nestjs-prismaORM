@@ -1,15 +1,14 @@
 import {
-  CallHandler,
-  ExecutionContext,
-  NestInterceptor,
   Injectable,
+  NestInterceptor,
+  ExecutionContext,
+  CallHandler,
   BadRequestException,
 } from '@nestjs/common';
-import { DatabaseError } from '../types/DatabaseError';
 import { catchError, Observable } from 'rxjs';
-import { isPrismaError } from 'src/common/utils/is-prisma-error.util';
-import e from 'express';
-import { handleDatabaseErrors } from 'src/common/utils/handle-database-errors.util';
+import { DatabaseError } from '../types/DatabaseError';
+import { handleDatabaseErrors } from '../../utils/handle-database-errors.util';
+import { isPrismaError } from '../../utils/is-prisma-error.util';
 
 @Injectable()
 export class DatabaseInterceptor implements NestInterceptor {
