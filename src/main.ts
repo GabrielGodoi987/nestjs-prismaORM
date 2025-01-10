@@ -6,12 +6,17 @@ import {
   SwaggerModule,
 } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
-import { HttpExceptionFilterFilter } from './common/http-exception-filter/http-exception-filter.filter';
 import { UnAuthorizedInterceptor } from './common/Errors/interceptors/UnAuthorized.interceptor';
 import { NotFoundErrorInterceptor } from './common/Errors/interceptors/NotFoundError.interceptor';
+import { DatabaseInterceptor } from './common/Errors/interceptors/Database.interceptor';
+import { ConflictErrorInterceptor } from './common/Errors/interceptors/conflict-error.interceptor';
+import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: ['error', 'warn'],
+  });
+
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
@@ -19,13 +24,6 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
-
-  //app.useGlobalFilters(new HttpExceptionFilterFilter());
-
-  app.useGlobalInterceptors(new NotFoundErrorInterceptor());
-  
-  app.useGlobalInterceptors(new UnAuthorizedInterceptor());
-
 
   const docs = new DocumentBuilder()
     .setTitle('PirsmaAPI')
@@ -35,6 +33,14 @@ async function bootstrap() {
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, docs);
   SwaggerModule.setup('docs', app, documentFactory);
+
+  app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalInterceptors(
+    new ConflictErrorInterceptor(),
+    new DatabaseInterceptor(),
+    new NotFoundErrorInterceptor(),
+    new UnAuthorizedInterceptor(),
+  );
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
