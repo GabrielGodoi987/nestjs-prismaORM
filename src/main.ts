@@ -1,7 +1,14 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { DocumentBuilder, SwaggerDocumentOptions, SwaggerModule } from '@nestjs/swagger';
+import {
+  DocumentBuilder,
+  SwaggerDocumentOptions,
+  SwaggerModule,
+} from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
+import { HttpExceptionFilterFilter } from './common/http-exception-filter/http-exception-filter.filter';
+import { UnAuthorizedInterceptor } from './common/Errors/interceptors/UnAuthorized.interceptor';
+import { NotFoundErrorInterceptor } from './common/Errors/interceptors/NotFoundError.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -12,6 +19,14 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
+
+  //app.useGlobalFilters(new HttpExceptionFilterFilter());
+
+  app.useGlobalInterceptors(new NotFoundErrorInterceptor());
+  
+  app.useGlobalInterceptors(new UnAuthorizedInterceptor());
+
+
   const docs = new DocumentBuilder()
     .setTitle('PirsmaAPI')
     .setDescription('Prisma api project')
