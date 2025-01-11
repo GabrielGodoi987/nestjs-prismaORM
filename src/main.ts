@@ -6,7 +6,7 @@ import {
   SwaggerModule,
 } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
-import { UnauthorizedInterceptor } from './common/Errors/interceptors/UnAuthorized.interceptor';
+import { UnAuthorizedInterceptor } from './common/Errors/interceptors/UnAuthorized.interceptor';
 import { NotFoundInterceptor } from './common/Errors/interceptors/NotFoundError.interceptor';
 import { DatabaseInterceptor } from './common/Errors/interceptors/Database.interceptor';
 import { ConflictInterceptor } from './common/Errors/interceptors/conflict-error.interceptor';
@@ -39,7 +39,7 @@ async function bootstrap() {
     new ConflictInterceptor(),
     new DatabaseInterceptor(),
     new NotFoundInterceptor(),
-    new UnauthorizedInterceptor(),
+    new UnAuthorizedInterceptor(),
   );
   await app.listen(process.env.PORT ?? 3000);
 }

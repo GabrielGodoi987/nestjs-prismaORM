@@ -9,7 +9,7 @@ import { catchError, Observable } from 'rxjs';
 import { UnAuthorizedError } from '../types/UnAuthorizedError';
 
 @Injectable()
-export class UnauthorizedInterceptor implements NestInterceptor {
+export class UnAuthorizedInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
       catchError(error => {
