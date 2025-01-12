@@ -1,4 +1,5 @@
--> this route above is to see the swagger documentation of the project
+# How to initiate the project
++ this route above is to see the swagger documentation of the project
 <ol>
  <li>localhost:3000/docs</li>
 </ol>
