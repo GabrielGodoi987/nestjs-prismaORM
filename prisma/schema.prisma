@@ -6,6 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["relationJoins"]
 }
 
 datasource db {
@@ -13,26 +14,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User{
-  id Int @id @default(autoincrement())
-  name String @db.VarChar(50)
-  email String @unique
-  password String
-  admin Boolean @default(false)
+model User {
+  id         Int      @id @default(autoincrement())
+  name       String   @db.VarChar(50)
+  email      String   @unique
+  password   String
+  admin      Boolean  @default(false)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
-  Post Post[]
+  Post       Post[]
 
   @@map("user")
 }
 
-model Post{
-  id Int @id @default(autoincrement())
-  published Boolean @default(false)
-  title String @db.VarChar(255)
-  content String?
-  author User? @relation(fields: [authorId], references: [id])
-  authorId Int?
+model Post {
+  id         Int      @id @default(autoincrement())
+  published  Boolean  @default(false)
+  title      String   @db.VarChar(255)
+  content    String?
+  author     User?    @relation(fields: [authorId], references: [id])
+  authorId   Int?
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 

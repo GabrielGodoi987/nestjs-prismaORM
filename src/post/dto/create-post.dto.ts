@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEmail,
-  IsInt,
   IsNotEmpty,
   IsString,
   MaxLength,
@@ -29,7 +28,7 @@ export class CreatePostDto {
   content: string;
 
   @ApiProperty()
-  @IsInt()
+  @IsEmail()
   @IsNotEmpty()
-  authorId: number;
+  authorEmail: string;
 }

@@ -11,6 +11,15 @@ export class UserReporitory {
   async createUser(createUserDto: CreateUserDto): Promise<UserEntity> {
     return await this.prismaService.user.create({
       data: createUserDto,
+      include: {
+        Post: {
+          select: {
+            title: true,
+            content: true,
+            created_at: true,
+          },
+        },
+      },
     });
   }
 
@@ -21,6 +30,7 @@ export class UserReporitory {
           select: {
             title: true,
             content: true,
+            created_at: true,
           },
         },
       },
@@ -30,6 +40,15 @@ export class UserReporitory {
   async findOne(id: number): Promise<UserEntity> {
     return await this.prismaService.user.findUnique({
       where: { id },
+      include: {
+        Post: {
+          select: {
+            title: true,
+            content: true,
+            created_at: true,
+          },
+        },
+      },
     });
   }
 
@@ -37,6 +56,15 @@ export class UserReporitory {
     return await this.prismaService.user.update({
       where: { id },
       data,
+      include: {
+        Post: {
+          select: {
+            title: true,
+            content: true,
+            created_at: true,
+          },
+        },
+      },
     });
   }
 
